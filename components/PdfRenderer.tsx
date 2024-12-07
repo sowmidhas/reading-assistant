@@ -3,7 +3,6 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  Platform,
   Dimensions,
   Pressable,
 } from "react-native";
@@ -24,37 +23,27 @@ const PdfRenderer = ({
     isPlaying,
     isLoading,
     startReading,
-    pauseReading,
-    resumeReading,
     stopReading,
     close,
     currentActiveIndex,
   } = usePdfReader(pdfUri, setFileUri);
 
   const { height: windowHeight, width: windowWidth } = Dimensions.get("window");
+  const action: { actionType: "play" | "stop"; action: () => void } = !isPlaying
+    ? { actionType: "play", action: startReading }
+    : { actionType: "stop", action: stopReading };
 
   const renderActionButtons = () => {
-    // In expo-speech, Pause and Resume are not supported on Android
-    if (Platform.OS === "ios") {
-      return isPlaying ? (
-        <Pressable style={PdfRendererStyles.iconStyle} onPress={pauseReading}>
-          <FontAwesome name="pause" size={24} />
+    return (
+      <View style={PdfRendererStyles.actionButtons}>
+        <Pressable style={PdfRendererStyles.iconStyle} onPress={action.action}>
+          <FontAwesome name={action.actionType} size={24} />
         </Pressable>
-      ) : (
-        <Pressable
-          style={PdfRendererStyles.iconStyle}
-          onPress={currentActiveIndex === 0 ? startReading : resumeReading}
-        >
-          <FontAwesome name="play" size={24} />
+        <Pressable style={PdfRendererStyles.iconStyle} onPress={close}>
+          <FontAwesome name="close" size={24} />
         </Pressable>
-      );
-    } else {
-      return (
-        <Pressable style={PdfRendererStyles.iconStyle} onPress={startReading}>
-          <FontAwesome name="play" size={24} />
-        </Pressable>
-      );
-    }
+      </View>
+    );
   };
 
   if (pdfUri)
@@ -90,15 +79,7 @@ const PdfRenderer = ({
           </Text>
         ))}
       </ScrollView>
-      <View style={PdfRendererStyles.actionButtons}>
-        {renderActionButtons()}
-        <Pressable style={PdfRendererStyles.iconStyle} onPress={stopReading}>
-          <FontAwesome name="stop" size={24} />
-        </Pressable>
-        <Pressable style={PdfRendererStyles.iconStyle} onPress={close}>
-          <FontAwesome name="close" size={24} />
-        </Pressable>
-      </View>
+      {renderActionButtons()}
     </>
   );
 };
@@ -112,6 +93,7 @@ const PdfRendererStyles = StyleSheet.create({
   textStyles: {
     fontFamily: "OpenDyslexic",
     fontSize: 16,
+    paddingHorizontal: 10,
   },
   loadingStyles: {
     textAlign: "center",
@@ -126,7 +108,7 @@ const PdfRendererStyles = StyleSheet.create({
     backgroundColor: "yellow",
   },
   actionButtons: {
-    height: 100,
+    height: 60,
     position: "absolute",
     bottom: 0,
     alignItems: "flex-end",
@@ -134,6 +116,7 @@ const PdfRendererStyles = StyleSheet.create({
     paddingBottom: 5,
     width: "100%",
     justifyContent: "flex-end",
+    backgroundColor: "#FAF3E0",
   },
   iconStyle: {
     padding: 10,

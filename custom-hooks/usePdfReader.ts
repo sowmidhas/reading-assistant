@@ -30,7 +30,7 @@ const usePdfReader = (pdfUri, setFileUri) => {
     }
   };
 
-  const extractTextFromPdf = async (pdfBase64) => {
+  const extractTextFromPdf = async (pdfBase64: string) => {
     const apiKey = "K89625276088957";
     const apiUrl = "https://api.ocr.space/parse/image";
     const base64String = "data:application/pdf;base64," + pdfBase64;
@@ -65,7 +65,8 @@ const usePdfReader = (pdfUri, setFileUri) => {
     if (index < pdfContent.length) {
       Speech.speak(pdfContent[index], {
         language: "en-US",
-        rate: 0.75,
+        voice: "en-US-default",
+        rate: 0.9,
         onDone: () => {
           handleNextSentence(index + 1);
         },
@@ -84,19 +85,9 @@ const usePdfReader = (pdfUri, setFileUri) => {
     readSentence(nextIndex);
   };
 
-  const pauseReading = () => {
-    setIsPlaying(false);
-    Speech.pause();
-  };
-
   const stopReading = () => {
     setIsPlaying(false);
-    setCurrentActiveIndex(0);
     Speech.stop();
-  };
-  const resumeReading = () => {
-    setIsPlaying(true);
-    Speech.resume();
   };
 
   const close = () => {
@@ -134,8 +125,6 @@ const usePdfReader = (pdfUri, setFileUri) => {
     isPlaying,
     isLoading,
     startReading,
-    pauseReading,
-    resumeReading,
     stopReading,
     close,
     currentActiveIndex,
