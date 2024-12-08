@@ -8,6 +8,7 @@ export const UPLOAD_STATUS = {
   UPLOADING: "UPLOADING",
   UPLOAD_SUCCESS: "UPLOAD_SUCCESS",
   UPLOAD_FAILED: "UPLOAD_FAILED",
+  TYPE_ERROR: "TYPE_ERROR",
 };
 
 const FileUpload = () => {
@@ -18,14 +19,19 @@ const FileUpload = () => {
     setUploadStatus(UPLOAD_STATUS.UPLOADING);
     DocumentPicker.getDocumentAsync()
       .then((res) => {
-        console.log("***** ", res.assets?.[0]?.uri);
-        if (res.assets?.[0]?.uri) {
+        console.log("The fileData is ", res.assets?.[0]);
+        const fileData = res.assets?.[0];
+        if (fileData?.mimeType !== "application/pdf") {
+          setUploadStatus(UPLOAD_STATUS.TYPE_ERROR);
+          return;
+        }
+        if (fileData?.uri) {
           setUploadStatus(UPLOAD_STATUS.UPLOAD_SUCCESS);
-          setFileUri(res.assets?.[0]?.uri);
+          setFileUri(fileData?.uri);
         }
       })
       .catch((err) => {
-        console.log("the err is ", err);
+        console.log("The err is ", err);
         setUploadStatus(UPLOAD_STATUS.UPLOAD_FAILED);
       });
   };
@@ -35,10 +41,14 @@ const FileUpload = () => {
     switch (uploadStatus) {
       case UPLOAD_STATUS.UPLOAD_FAILED:
         message = "Something went wrong! Try again";
+        break;
+      case UPLOAD_STATUS.TYPE_ERROR:
+        message = "Sorry, Please select a pdf file to proceed.";
+        break;
       default:
         message = "";
     }
-    return <Text>{message}</Text>;
+    return <Text style={FileUploadStyles.message}>{message}</Text>;
   };
 
   const renderPdf = () => {
@@ -74,6 +84,11 @@ const FileUploadStyles = StyleSheet.create({
     fontFamily: "OpenDyslexic",
     fontSize: 16,
     color: "#1A237E",
+  },
+  message: {
+    paddingTop: 25,
+    color: "purple",
+    fontSize: 14,
   },
 });
 

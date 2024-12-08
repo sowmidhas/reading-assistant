@@ -50,13 +50,13 @@ const usePdfReader = (pdfUri, setFileUri) => {
           (result) => result.ParsedText
         ).join(" ");
         const splittedContent = ParsedContent.split(/[.]/);
-        console.log("*** The result is ", splittedContent);
+        console.log("The result is ", splittedContent);
 
         setPdfContent(splittedContent);
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log("** The error is ", err);
+        console.log("The error is ", err);
         setIsLoading(false);
       });
   };
@@ -66,11 +66,15 @@ const usePdfReader = (pdfUri, setFileUri) => {
       Speech.speak(pdfContent[index], {
         language: "en-US",
         voice: "en-US-default",
-        rate: 0.9,
+        rate: 0.8,
         onDone: () => {
           handleNextSentence(index + 1);
         },
       });
+    } else {
+      stopReading();
+      setCurrentActiveIndex(0);
+      scrollToActiveIndex(0);
     }
   };
 
