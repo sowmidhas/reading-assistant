@@ -22,6 +22,14 @@ This project is part of my journey to create assistive technology solutions. Thi
 - Text extraction: OCR.space API
 - Text-to-Speech: `expo-speech`
   
+## Roadmap
+
+Here are some features I plan to add in future updates:
+- Support for other file types
+- Customization of text size, colors, and styles.
+- Highlighting key phrases for better comprehension.
+- Reading speed customizations options.
+
 
 ## Installation
 
