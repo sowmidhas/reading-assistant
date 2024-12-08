@@ -16,6 +16,14 @@ This project is part of my journey to create assistive technology solutions. Thi
 
 ## Demo
 
+<div>
+  <img src="./assets/demo/LandingPage.jpeg" alt="landingPage" height="600">
+  <img src="./assets/demo/Reader.jpeg" alt="Reader" height="600">
+</div>
+<br>
+
+[Watch the Demo Video](https://vimeo.com/1037193855?share=copy)
+
 ## Technologies used
 
 - Frontend: React Native
