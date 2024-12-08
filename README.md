@@ -2,6 +2,10 @@
 
 A simple and accessible PDF reader app designed specifically for individuals with dyslexia. This app extracts text from uploaded PDF files, displays it with accessibility-focused formatting, and reads the content aloud with real-time sentence highlighting.
 
+## Motivation
+
+This project is part of my journey to create assistive technology solutions. This app is a small step towards creating solutions that empower individuals with dyslexia to access information effortlessly and enjoy a more inclusive reading experience.
+
 
 ## Features
 
